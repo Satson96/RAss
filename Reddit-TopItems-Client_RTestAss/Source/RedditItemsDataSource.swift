@@ -14,6 +14,8 @@ class RedditItemsDataSource: NSObject {
     var after: String?
     var before: String?
     
+    private var lastDist: Int?
+    
     var isLoading: Bool = false
     
     func getNext(completion: @escaping (Result<[RedditItem], Error>) -> Void) {
@@ -22,6 +24,7 @@ class RedditItemsDataSource: NSObject {
         let request = TopRedditItemsRequest(after: after,
                                             before: before,
                                             limit: recordsPerPage)
+//                                            count: count != 0 ? UInt(count) : nil)
         
         isLoading = true
         HTTPNetworkClient.sharedInstance.perform(request) { (result: Result<TopRedditItemsResponse, Error>) in
@@ -29,10 +32,12 @@ class RedditItemsDataSource: NSObject {
             case .success(let response):
                 let items = response.items
                 
-                self.count += items.count
+                self.count += response.dist
                 
                 self.after = response.after
                 self.before = response.before
+                
+                self.lastDist = response.dist
                 
                 completion(.success(items))
             case .failure(let error):
@@ -41,5 +46,17 @@ class RedditItemsDataSource: NSObject {
             
             self.isLoading = false
         }
+    }
+    
+    func hasNextPage() -> Bool {
+        let lastPageReceived = lastDist == 0 && after == nil
+        return !lastPageReceived
+    }
+    
+    func resetPagination() {
+        count    = 0
+        after    = nil
+        before   = nil
+        lastDist = nil
     }
 }

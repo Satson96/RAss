@@ -23,9 +23,14 @@ class RedditItemsViewController: UIViewController {
     
     private func toggleNetworkOperation(_ flag: Bool) {
         if flag {
-            activityIndicatorView.startAnimating()
+            if viewModel.getNumberOfItems() == 0 {
+                // Should show loading indicator only if the list is empty,
+                // if there are items in the list, loader should be shown at the end of the list.
+                activityIndicatorView.startAnimating()
+            }
         } else {
             activityIndicatorView.stopAnimating()
+            tableView.tableFooterView = UIView()
         }
     }
 
@@ -44,6 +49,26 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
         cell.configure(viewModel: viewModel.getViewModel(forIndex: indexPath.row))
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastSectionIndex = tableView.numberOfSections - 1
+        let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
+        
+        if indexPath.section == lastSectionIndex
+            && indexPath.row == lastRowIndex
+            && viewModel.canLoadNextPage() {
+            
+            let spinner = UIActivityIndicatorView(style: .large)
+            spinner.startAnimating()
+            spinner.frame = CGRect(x: 0, y: 0,
+                                   width: tableView.bounds.width, height: 44)
+            
+            tableView.tableFooterView = spinner
+            tableView.tableFooterView?.isHidden = false
+            
+            viewModel.loadNextPage()
+        }
     }
     
 }

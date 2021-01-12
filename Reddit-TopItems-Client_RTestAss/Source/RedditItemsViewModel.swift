@@ -8,11 +8,12 @@
 import Foundation
 
 class RedditItemsViewModel: NSObject {
-    var redditItems: [RedditItem] = []
+    
+    private var redditItems: [RedditItem] = []
+    
+    private let dataSource = RedditItemsDataSource()
     
     weak var delegate: ViewModelDelegate?
-    
-    let dataSource = RedditItemsDataSource()
     
     func loadNextPage() {
         self.delegate?.willLoadData()
@@ -33,5 +34,9 @@ class RedditItemsViewModel: NSObject {
     
     func getViewModel(forIndex index: Int) -> RedditItemViewModel {
         return RedditItemViewModel(item: redditItems[index])
+    }
+    
+    func canLoadNextPage() -> Bool {
+        return dataSource.hasNextPage() && !dataSource.isLoading
     }
 }
