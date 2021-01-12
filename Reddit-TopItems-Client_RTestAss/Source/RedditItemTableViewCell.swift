@@ -15,9 +15,19 @@ class RedditItemTableViewCell: UITableViewCell {
     @IBOutlet weak var itemDescriptionLabel: UILabel!
     @IBOutlet weak var itemCommentsLabel: UILabel!
     
+    var viewModel: RedditItemViewModel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    func configure(viewModel: RedditItemViewModel) {
+        self.viewModel = viewModel
+        
+        itemTitleLabel.text       = viewModel.titleText
+        itemDescriptionLabel.text = viewModel.itemDescriptionText
+        itemCommentsLabel.text    = viewModel.commentsText
     }
 
     

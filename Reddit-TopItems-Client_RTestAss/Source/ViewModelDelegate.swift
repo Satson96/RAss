@@ -8,5 +8,8 @@
 import Foundation
 
 protocol ViewModelDelegate: class {
+    func receivedError(message: String)
     
+    func willLoadData()
+    func didLoadData()
 }
