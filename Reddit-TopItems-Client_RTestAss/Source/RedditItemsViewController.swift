@@ -13,9 +13,18 @@ class RedditItemsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        
+        HTTPNetworkClient.sharedInstance.perform(TopRedditItemsRequest(after: nil, before: nil, limit: nil, count: nil)) { (result: Result<TopRedditItemsResponse, Error>) in
+            switch result {
+            case .success(let response):
+                let items = response.items
+                print("items: \(items)")
+            case .failure(_):
+                break
+            }
+        }
     }
-    
 
 
 }
