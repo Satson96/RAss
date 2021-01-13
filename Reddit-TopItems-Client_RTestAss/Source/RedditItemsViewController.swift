@@ -12,18 +12,35 @@ class RedditItemsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .gray
+        refreshControl.addTarget(self,
+                                 action: #selector(refreshTriggered(_:)),
+                                 for: .valueChanged)
+        
+        return refreshControl
+    }()
+    
+    fileprivate var isRefreshPulled = false
+    
     let viewModel = RedditItemsViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.addSubview(refreshControl)
+        
         viewModel.delegate = self
         viewModel.loadNextPage()
     }
     
-    private func toggleNetworkOperation(_ flag: Bool) {
+    private func toggleNetworkOperation(_ flag: Bool, isRefresh: Bool = false) {
+        tableView.isUserInteractionEnabled = !isRefresh
+        tableView.alpha = isRefresh ? 0.3 : 1.0
+        
         if flag {
-            if viewModel.getNumberOfItems() == 0 {
+            if !isRefresh && viewModel.getNumberOfItems() == 0 {
                 // Should show loading indicator only if the list is empty,
                 // if there are items in the list, loader should be shown at the end of the list.
                 activityIndicatorView.startAnimating()
@@ -31,7 +48,16 @@ class RedditItemsViewController: UIViewController {
         } else {
             activityIndicatorView.stopAnimating()
             tableView.tableFooterView = UIView()
+            
+            refreshControl.endRefreshing()
         }
+    }
+    
+    @objc private func refreshTriggered(_ refreshControl: UIRefreshControl) {
+        isRefreshPulled = true
+        
+        viewModel.refreshPages()
+        tableView.reloadData()
     }
 
 
@@ -76,7 +102,8 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
 extension RedditItemsViewController: ViewModelDelegate {
     
     func willLoadData() {
-        toggleNetworkOperation(true)
+        toggleNetworkOperation(true, isRefresh: isRefreshPulled)
+        isRefreshPulled = false
     }
     
     func didLoadData() {

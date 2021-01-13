@@ -15,11 +15,17 @@ class RedditItemsViewModel: NSObject {
     
     weak var delegate: ViewModelDelegate?
     
+    private var isRefreshingPages = false
+    
     func loadNextPage() {
         self.delegate?.willLoadData()
         dataSource.getNext { (result: Result<[RedditItem], Error>) in
             switch result {
             case .success(let items):
+                if self.isRefreshingPages {
+                    self.redditItems.removeAll()
+                    self.isRefreshingPages = false
+                }
                 self.redditItems.append(contentsOf: items)
                 self.delegate?.didLoadData()
             case .failure(let error):
@@ -38,5 +44,11 @@ class RedditItemsViewModel: NSObject {
     
     func canLoadNextPage() -> Bool {
         return dataSource.hasNextPage() && !dataSource.isLoading
+    }
+    
+    func refreshPages() {
+        isRefreshingPages = true
+        dataSource.resetPagination()
+        loadNextPage()
     }
 }
