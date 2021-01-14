@@ -11,6 +11,8 @@ class RedditItemTableViewCell: UITableViewCell {
     static var identifier = "RedditItemTableViewCell"
     
     @IBOutlet weak var itemImageView: UIImageView!
+    @IBOutlet weak var imageLoadingIndicatorView: UIActivityIndicatorView!
+    
     @IBOutlet weak var itemTitleLabel: UILabel!
     @IBOutlet weak var itemDescriptionLabel: UILabel!
     @IBOutlet weak var itemCommentsLabel: UILabel!
@@ -19,7 +21,26 @@ class RedditItemTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        setDefaultValues()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        setDefaultValues()
+    }
+    
+    private func setDefaultValues() {
+        showDefaultImage()
+        
+        itemTitleLabel.text       = ""
+        itemDescriptionLabel.text = ""
+        itemCommentsLabel.text    = ""
+    }
+    
+    func showDefaultImage() {
+        imageLoadingIndicatorView.stopAnimating()
+        itemImageView.image = UIImage(systemName: "photo.fill.on.rectangle.fill")
+        itemImageView.tintColor = UIColor.lightGray
     }
     
     func configure(viewModel: RedditItemViewModel) {

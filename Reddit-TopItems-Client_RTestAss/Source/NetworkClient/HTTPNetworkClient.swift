@@ -12,7 +12,7 @@ class HTTPNetworkClient: NSObject {
     
     private let serialParseQueue = DispatchQueue(label: "raketa.test.queue")
     
-    private var generalError: NSError = {
+    private lazy var generalError: NSError = {
         return NSError(domain: "HTTPNetworkClient",
                        code: 0,
                        userInfo: [NSLocalizedDescriptionKey: "Something went wrong.\nPlease try later again."])
@@ -36,7 +36,7 @@ class HTTPNetworkClient: NSObject {
         }
         
         #if DEBUG
-        print("Sending Request : " + urlRequest.url!.absoluteString)
+        print("HTTPNetworkClient: Sending Request : " + urlRequest.url!.absoluteString)
         #endif
         
         let session = URLSession.shared
@@ -50,8 +50,8 @@ class HTTPNetworkClient: NSObject {
                 
                 #if DEBUG
                 let jsonResult = try! JSONSerialization.jsonObject(with: data, options: [])
-                print("Response Data: \(jsonResult)")
-                print("Response Status code: \(statusCode)")
+                print("HTTPNetworkClient: Response Data: \(jsonResult)")
+                print("HTTPNetworkClient: Response Status code: \(statusCode)")
                 #endif
                 
                 do {

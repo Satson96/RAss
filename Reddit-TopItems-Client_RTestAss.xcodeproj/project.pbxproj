@@ -25,6 +25,9 @@
 		C5B3D9CA25AE00B90064A33D /* TopRedditItemsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3D9C925AE00B90064A33D /* TopRedditItemsResponse.swift */; };
 		C5B3D9CD25AE01AE0064A33D /* RedditItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3D9CC25AE01AE0064A33D /* RedditItem.swift */; };
 		C5B3D9D325AE044B0064A33D /* RedditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3D9D225AE044B0064A33D /* RedditItemViewModel.swift */; };
+		C5B3DA0425AF62A00064A33D /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA0325AF629F0064A33D /* ImageDownloader.swift */; };
+		C5B3DA0725AF63A50064A33D /* NetworkImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA0625AF63A50064A33D /* NetworkImageOperation.swift */; };
+		C5B3DA0A25AF64040064A33D /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA0925AF64040064A33D /* AsyncOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		C5B3D9C925AE00B90064A33D /* TopRedditItemsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRedditItemsResponse.swift; sourceTree = "<group>"; };
 		C5B3D9CC25AE01AE0064A33D /* RedditItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditItem.swift; sourceTree = "<group>"; };
 		C5B3D9D225AE044B0064A33D /* RedditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditItemViewModel.swift; sourceTree = "<group>"; };
+		C5B3DA0325AF629F0064A33D /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		C5B3DA0625AF63A50064A33D /* NetworkImageOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkImageOperation.swift; sourceTree = "<group>"; };
+		C5B3DA0925AF64040064A33D /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,7 @@
 		C5B3D9AF25ACD5DC0064A33D /* NetworkClient */ = {
 			isa = PBXGroup;
 			children = (
+				C5B3DA0225AF628F0064A33D /* ImageDownloader */,
 				C5B3D9B025ACD5EF0064A33D /* HTTPNetworkClient.swift */,
 				C5B3D9BB25ADF4AC0064A33D /* RequestProtocol.swift */,
 				C5B3D9BF25ADF4D80064A33D /* RequestInputProtocol.swift */,
@@ -133,6 +140,16 @@
 				C5B3D9CC25AE01AE0064A33D /* RedditItem.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		C5B3DA0225AF628F0064A33D /* ImageDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				C5B3DA0925AF64040064A33D /* AsyncOperation.swift */,
+				C5B3DA0325AF629F0064A33D /* ImageDownloader.swift */,
+				C5B3DA0625AF63A50064A33D /* NetworkImageOperation.swift */,
+			);
+			path = ImageDownloader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +224,7 @@
 			files = (
 				C5B3D9BC25ADF4AD0064A33D /* RequestProtocol.swift in Sources */,
 				C5B3D99425ACD3B60064A33D /* RedditItemsViewController.swift in Sources */,
+				C5B3DA0425AF62A00064A33D /* ImageDownloader.swift in Sources */,
 				C5B3D9B125ACD5EF0064A33D /* HTTPNetworkClient.swift in Sources */,
 				C5B3D9C325ADF7DA0064A33D /* EmptyRequestInput.swift in Sources */,
 				C5B3D99025ACD3B60064A33D /* AppDelegate.swift in Sources */,
@@ -218,7 +236,9 @@
 				C5B3D9A925ACD57E0064A33D /* RedditItemsViewModel.swift in Sources */,
 				C5B3D9B725ACD7180064A33D /* RedditItemTableViewCell.swift in Sources */,
 				C5B3D9D325AE044B0064A33D /* RedditItemViewModel.swift in Sources */,
+				C5B3DA0725AF63A50064A33D /* NetworkImageOperation.swift in Sources */,
 				C5B3D9C725AE00B10064A33D /* TopRedditItemsRequest.swift in Sources */,
+				C5B3DA0A25AF64040064A33D /* AsyncOperation.swift in Sources */,
 				C5B3D9AD25ACD5980064A33D /* RedditItemsDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,6 +389,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4KC8BB4WX7;
 				INFOPLIST_FILE = "Reddit-TopItems-Client_RTestAss/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -388,6 +409,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4KC8BB4WX7;
 				INFOPLIST_FILE = "Reddit-TopItems-Client_RTestAss/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

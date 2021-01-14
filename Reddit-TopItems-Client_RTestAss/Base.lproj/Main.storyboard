@@ -27,13 +27,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zcb-0S-KBH">
-                                                    <rect key="frame" x="30" y="21" width="135" height="135"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.fill.on.rectangle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Zcb-0S-KBH">
+                                                    <rect key="frame" x="30" y="21.5" width="135" height="134.5"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="Zcb-0S-KBH" secondAttribute="height" multiplier="1:1" id="JRy-a4-TJD"/>
                                                         <constraint firstAttribute="width" constant="135" id="adJ-iL-qbo"/>
                                                     </constraints>
                                                 </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="IS0-hF-3aA">
+                                                    <rect key="frame" x="87.5" y="78.5" width="20" height="20"/>
+                                                    <color key="color" red="0.75686274509999996" green="0.0078431372550000003" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                </activityIndicatorView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEE-J7-Ekr">
                                                     <rect key="frame" x="192" y="21" width="41" height="26.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
@@ -67,9 +72,12 @@
                                                 <constraint firstItem="tEE-J7-Ekr" firstAttribute="top" secondItem="Zcb-0S-KBH" secondAttribute="top" id="mFQ-1T-mcT"/>
                                                 <constraint firstItem="Zcb-0S-KBH" firstAttribute="top" secondItem="RJo-Qu-dB5" secondAttribute="topMargin" constant="10" id="raO-0H-ptc"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MhO-Jv-5WM" secondAttribute="trailing" constant="10" id="tqx-TE-jm9"/>
+                                                <constraint firstItem="IS0-hF-3aA" firstAttribute="centerY" secondItem="Zcb-0S-KBH" secondAttribute="centerY" id="uqI-sR-ECm"/>
+                                                <constraint firstItem="IS0-hF-3aA" firstAttribute="centerX" secondItem="Zcb-0S-KBH" secondAttribute="centerX" id="vSx-cD-gFi"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="imageLoadingIndicatorView" destination="IS0-hF-3aA" id="ZmI-66-NPk"/>
                                             <outlet property="itemCommentsLabel" destination="98Q-Di-Zdw" id="j7P-qJ-4UB"/>
                                             <outlet property="itemDescriptionLabel" destination="MhO-Jv-5WM" id="0Cb-tG-FIE"/>
                                             <outlet property="itemImageView" destination="Zcb-0S-KBH" id="GzW-4t-smf"/>
@@ -108,6 +116,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="photo.fill.on.rectangle.fill" catalog="system" width="128" height="96"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

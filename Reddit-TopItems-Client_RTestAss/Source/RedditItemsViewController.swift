@@ -70,9 +70,24 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RedditItemTableViewCell.identifier) as!  RedditItemTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: RedditItemTableViewCell.identifier) as! RedditItemTableViewCell
         
-        cell.configure(viewModel: viewModel.getViewModel(forIndex: indexPath.row))
+        let itemViewModel = viewModel.getViewModel(forIndex: indexPath.row)
+        cell.configure(viewModel: itemViewModel)
+        
+        if let thumbnailImageUrl = itemViewModel.thumbnailSizeImageUrl {
+            cell.imageLoadingIndicatorView.startAnimating()
+            ImageDownloader.sharedInstance.loadImage(url: thumbnailImageUrl) { (image, url, fromCache) in
+                guard let cell = fromCache ? cell : tableView.cellForRow(at: indexPath) as? RedditItemTableViewCell else { return }
+                
+                if let image = image {
+                    cell.itemImageView.image = image
+                    cell.imageLoadingIndicatorView.stopAnimating()
+                } else {
+                    cell.showDefaultImage()
+                }
+            }
+        }
         
         return cell
     }
