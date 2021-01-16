@@ -18,6 +18,9 @@ class ImageViewerViewController: UIViewController, WKUIDelegate, WKNavigationDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.webView.uiDelegate = self
+        self.webView.navigationDelegate = self
+        
         if let title = viewModel?.title {
             navigationItem.title = title
         }
