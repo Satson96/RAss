@@ -93,8 +93,7 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
                 guard let cell = fromCache ? cell : tableView.cellForRow(at: indexPath) as? RedditItemTableViewCell else { return }
                 
                 if let image = image {
-                    cell.itemImageView.image = image
-                    cell.imageLoadingIndicatorView.stopAnimating()
+                    cell.show(image: image)
                 } else {
                     cell.showDefaultImage()
                 }
@@ -111,9 +110,8 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
                 self.showError(message: "There is no preview image for this post!")
                 return
             }
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: ImageViewerViewController.identifier) as! ImageViewerViewController
+
+            let vc = ImageViewerViewController.build()
             vc.viewModel = webViewModel
             
             self.navigationController?.pushViewController(vc, animated: true)

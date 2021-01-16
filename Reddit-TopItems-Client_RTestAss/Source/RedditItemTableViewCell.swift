@@ -10,7 +10,7 @@ import UIKit
 class RedditItemTableViewCell: UITableViewCell {
     static var identifier = "RedditItemTableViewCell"
     
-    @IBOutlet weak var itemImageView: UIImageView!
+    @IBOutlet private weak var itemImageView: UIImageView!
     @IBOutlet weak var imageLoadingIndicatorView: UIActivityIndicatorView!
     
     @IBOutlet weak var itemTitleLabel: UILabel!
@@ -21,14 +21,22 @@ class RedditItemTableViewCell: UITableViewCell {
     
     var viewModel: RedditItemViewModel!
     
+    fileprivate var defaultImageIsUsed: Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        setDefaultValues()
+        
+        itemImageView.tintColor = UIColor.lightGray
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                           action: #selector(itemImageViewTapped))
         itemImageView.isUserInteractionEnabled = true
         itemImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        itemImageView.addInteraction(UIContextMenuInteraction(delegate: self))
+        
+        
+        setDefaultValues()
     }
     
     override func prepareForReuse() {
@@ -47,7 +55,16 @@ class RedditItemTableViewCell: UITableViewCell {
     func showDefaultImage() {
         imageLoadingIndicatorView.stopAnimating()
         itemImageView.image = UIImage(systemName: "photo.fill.on.rectangle.fill")
-        itemImageView.tintColor = UIColor.lightGray
+        
+        defaultImageIsUsed = true
+    }
+    
+    
+    func show(image: UIImage) {
+        imageLoadingIndicatorView.stopAnimating()
+        itemImageView.image = image
+        
+        defaultImageIsUsed = false
     }
     
     func configure(viewModel: RedditItemViewModel) {
@@ -62,6 +79,39 @@ class RedditItemTableViewCell: UITableViewCell {
         onImagePressed?()
     }
 
-    
+}
 
+extension RedditItemTableViewCell: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {        
+        return UIContextMenuConfiguration(identifier: nil) { () -> UIViewController? in
+            guard let viewModel = self.viewModel.getImageViewerViewModel() else {
+                return nil
+            }
+            
+            let vc = ImageViewerViewController.build()
+            vc.viewModel = viewModel
+            
+            return vc
+        } actionProvider: { _ in
+            var children = [UIMenuElement]()
+
+            if !self.defaultImageIsUsed {
+                let saveToPhotos = UIAction(title: "Add to Photos",
+                                            image: UIImage(systemName: "square.and.arrow.down")) {_ in
+                    if let image = self.itemImageView.image {
+                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                    }
+                }
+
+                children.append(saveToPhotos)
+            }
+
+
+            return UIMenu(title: "", children: children)
+        }
+
+    }
+    
+    
 }

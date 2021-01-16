@@ -15,6 +15,12 @@ class ImageViewerViewController: UIViewController, WKUIDelegate, WKNavigationDel
     
     @IBOutlet weak var webView: WKWebView!
     
+    static func build() -> ImageViewerViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: ImageViewerViewController.identifier) as! ImageViewerViewController
+        return vc
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
