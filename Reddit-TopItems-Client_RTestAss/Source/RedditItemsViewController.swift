@@ -35,6 +35,18 @@ class RedditItemsViewController: UIViewController {
         viewModel.loadNextPage()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     private func toggleNetworkOperation(_ flag: Bool, isRefresh: Bool = false) {
         tableView.isUserInteractionEnabled = !isRefresh
         tableView.alpha = isRefresh ? 0.3 : 1.0
@@ -89,6 +101,24 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
             }
         }
         
+        cell.onImagePressed = { [weak itemViewModel, weak self] in
+            guard let self = self,
+                  let viewModel = itemViewModel else {
+                return
+            }
+            
+            guard let webViewModel = viewModel.getImageViewerViewModel() else {
+                self.showError(message: "There is no preview image for this post!")
+                return
+            }
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: ImageViewerViewController.identifier) as! ImageViewerViewController
+            vc.viewModel = webViewModel
+            
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
         return cell
     }
     
@@ -129,6 +159,10 @@ extension RedditItemsViewController: ViewModelDelegate {
     func receivedError(message: String) {
         toggleNetworkOperation(false)
         
+        showError(message: message)
+    }
+    
+    func showError(message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
         

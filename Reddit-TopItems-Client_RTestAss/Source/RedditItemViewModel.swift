@@ -53,7 +53,7 @@ class RedditItemViewModel: NSObject {
     }
     
     var fullSizeImageUrl: URL? {
-        guard let fullImageUrl = item.url else {
+        guard let fullImageUrl = item.preview?.source.imageUrlStr else {
             return nil
         }
         
@@ -66,5 +66,13 @@ class RedditItemViewModel: NSObject {
         }
         
         return URL(string: thumbnailImageUrl)
+    }
+    
+    func getImageViewerViewModel() -> ImageViewerViewModel? {
+        guard let fullSizeImageUrl = fullSizeImageUrl else {
+            return nil
+        }
+        
+        return ImageViewerViewModel(url: fullSizeImageUrl, title: titleText)
     }
 }

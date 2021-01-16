@@ -28,6 +28,8 @@
 		C5B3DA0425AF62A00064A33D /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA0325AF629F0064A33D /* ImageDownloader.swift */; };
 		C5B3DA0725AF63A50064A33D /* NetworkImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA0625AF63A50064A33D /* NetworkImageOperation.swift */; };
 		C5B3DA0A25AF64040064A33D /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA0925AF64040064A33D /* AsyncOperation.swift */; };
+		C5B3DA1425B05D290064A33D /* ImageViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA1325B05D290064A33D /* ImageViewerViewModel.swift */; };
+		C5B3DA1925B05D860064A33D /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3DA1725B05D860064A33D /* ImageViewerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,8 @@
 		C5B3DA0325AF629F0064A33D /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		C5B3DA0625AF63A50064A33D /* NetworkImageOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkImageOperation.swift; sourceTree = "<group>"; };
 		C5B3DA0925AF64040064A33D /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		C5B3DA1325B05D290064A33D /* ImageViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewModel.swift; sourceTree = "<group>"; };
+		C5B3DA1725B05D860064A33D /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,7 @@
 		C5B3D9A725ACD5660064A33D /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C5B3DA0E25B05CA30064A33D /* ImageViewer */,
 				C5B3D9D525AE04B70064A33D /* Model */,
 				C5B3D9AF25ACD5DC0064A33D /* NetworkClient */,
 				C5B3D9C525AE005D0064A33D /* RedditHTTPMsgs */,
@@ -150,6 +155,15 @@
 				C5B3DA0625AF63A50064A33D /* NetworkImageOperation.swift */,
 			);
 			path = ImageDownloader;
+			sourceTree = "<group>";
+		};
+		C5B3DA0E25B05CA30064A33D /* ImageViewer */ = {
+			isa = PBXGroup;
+			children = (
+				C5B3DA1325B05D290064A33D /* ImageViewerViewModel.swift */,
+				C5B3DA1725B05D860064A33D /* ImageViewerViewController.swift */,
+			);
+			path = ImageViewer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,6 +238,8 @@
 			files = (
 				C5B3D9BC25ADF4AD0064A33D /* RequestProtocol.swift in Sources */,
 				C5B3D99425ACD3B60064A33D /* RedditItemsViewController.swift in Sources */,
+				C5B3DA1425B05D290064A33D /* ImageViewerViewModel.swift in Sources */,
+				C5B3DA1925B05D860064A33D /* ImageViewerViewController.swift in Sources */,
 				C5B3DA0425AF62A00064A33D /* ImageDownloader.swift in Sources */,
 				C5B3D9B125ACD5EF0064A33D /* HTTPNetworkClient.swift in Sources */,
 				C5B3D9C325ADF7DA0064A33D /* EmptyRequestInput.swift in Sources */,

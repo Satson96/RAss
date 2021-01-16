@@ -29,7 +29,7 @@ struct TopRedditItemsResponse: Decodable {
         
         items = try dataContainer.decode([RedditItem].self, forKey: .children)
         dist = try dataContainer.decode(Int.self, forKey: .dist)
-        after = try dataContainer.decode(String?.self, forKey: .after)
-        before = try dataContainer.decode(String?.self, forKey: .before)
+        after = try? dataContainer.decode(String?.self, forKey: .after)
+        before = try? dataContainer.decode(String?.self, forKey: .before)
     }
 }

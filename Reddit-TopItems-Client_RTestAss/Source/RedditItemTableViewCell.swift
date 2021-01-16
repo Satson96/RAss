@@ -17,11 +17,18 @@ class RedditItemTableViewCell: UITableViewCell {
     @IBOutlet weak var itemDescriptionLabel: UILabel!
     @IBOutlet weak var itemCommentsLabel: UILabel!
     
+    var onImagePressed: (()->())?
+    
     var viewModel: RedditItemViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         setDefaultValues()
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                          action: #selector(itemImageViewTapped))
+        itemImageView.isUserInteractionEnabled = true
+        itemImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     override func prepareForReuse() {
@@ -49,6 +56,10 @@ class RedditItemTableViewCell: UITableViewCell {
         itemTitleLabel.text       = viewModel.titleText
         itemDescriptionLabel.text = viewModel.itemDescriptionText
         itemCommentsLabel.text    = viewModel.commentsText
+    }
+    
+    @objc func itemImageViewTapped() {
+        onImagePressed?()
     }
 
     

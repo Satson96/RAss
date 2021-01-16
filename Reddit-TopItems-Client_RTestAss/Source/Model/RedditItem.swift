@@ -14,14 +14,7 @@ struct RedditItem: Decodable {
     var thumbnail: String?
     var url: String?
     var created: TimeInterval?
-    
-    enum RootKeys: CodingKey {
-      case data, kind
-    }
-    
-    enum CodingKeys: CodingKey {
-      case title, author, num_comments, thumbnail, url, created
-    }
+    var preview: ImagePreview?
     
     var itemDate: Date? {
         guard let created = created else {
@@ -31,17 +24,62 @@ struct RedditItem: Decodable {
         return Date(timeIntervalSince1970: created)
     }
     
-    init(from decoder: Decoder) throws {
-        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-        let dataContainer = try rootContainer
-            .nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
-        
-        title = try dataContainer.decode(String?.self, forKey: .title)
-        author = try dataContainer.decode(String?.self, forKey: .author)
-        num_comments = try dataContainer.decode(Int?.self, forKey: .num_comments)
-        thumbnail = try dataContainer.decode(String?.self, forKey: .thumbnail)
-        url = try dataContainer.decode(String?.self, forKey: .url)
-        created = try dataContainer.decode(TimeInterval?.self, forKey: .created)
+    enum RootKeys: CodingKey {
+      case data, kind
     }
     
+    enum CodingKeys: CodingKey {
+      case title, author, num_comments, thumbnail, url, created, preview
+    }
+    
+    enum PreviewKeys: CodingKey {
+      case images
+    }
+    
+    
+    
+    init(from decoder: Decoder) throws {
+        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
+        let dataContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self,
+                                                              forKey: .data)
+        
+        title = try? dataContainer.decode(String?.self, forKey: .title)
+        author = try? dataContainer.decode(String?.self, forKey: .author)
+        num_comments = try? dataContainer.decode(Int?.self, forKey: .num_comments)
+        thumbnail = try? dataContainer.decode(String?.self, forKey: .thumbnail)
+        url = try? dataContainer.decode(String?.self, forKey: .url)
+        created = try? dataContainer.decode(TimeInterval?.self, forKey: .created)
+        
+        let previewContainer = try? dataContainer.nestedContainer(keyedBy: PreviewKeys.self,
+                                                                  forKey: .preview)
+        
+        preview = (try? previewContainer?.decode([RedditItem.ImagePreview]?.self, forKey: .images))?.first
+        
+    }
+    
+}
+
+extension RedditItem {
+    struct ImageSource: Decodable {
+        var imageUrlStr: String?
+        
+        enum CodingKeys: CodingKey {
+          case url
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            let urlStr = try? container.decode(String?.self, forKey: .url)
+            
+            // the image url string is received as html encoded. since url is signed, we need it in original format(decoded back) to have valid url.
+            // for the image url string only '&' character is encoded.
+            imageUrlStr = urlStr?.replacingOccurrences(of: "&amp;", with: "&")
+        }
+    }
+    
+    struct ImagePreview: Decodable {
+        var id: String?
+        var source: ImageSource
+    }
 }
