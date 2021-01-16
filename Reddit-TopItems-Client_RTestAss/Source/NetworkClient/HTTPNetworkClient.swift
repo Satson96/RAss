@@ -44,7 +44,9 @@ class HTTPNetworkClient: NSObject {
             self.serialParseQueue.async {
                 let statusCode = (response as! HTTPURLResponse).statusCode
                 guard let data = data, error == nil, self.acceptableStatusCodes.contains(statusCode) else {
-                    completion(.failure(self.generalError))
+                    DispatchQueue.main.async {
+                        completion(.failure(self.generalError))
+                    }
                     return
                 }
                 
@@ -64,7 +66,10 @@ class HTTPNetworkClient: NSObject {
                 } catch let error as NSError {
                     print("HTTPNetworkClient: decode http response error. \(error.localizedDescription)")
                     
-                    completion(.failure(self.generalError))
+                    DispatchQueue.main.async {
+                        completion(.failure(self.generalError))
+                    }
+                    
                 }
             }
         }
