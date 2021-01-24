@@ -24,7 +24,40 @@ class RedditItemsViewController: UIViewController {
     
     fileprivate var isRefreshPulled = false
     
-    let viewModel = RedditItemsViewModel()
+    fileprivate var viewFirstLoad   = true
+
+    var _UIModelAssociationData: [String?]?
+    var UIModelAssociationData: [String?] {
+        if _UIModelAssociationData == nil {
+            _UIModelAssociationData = viewModel.getUIModelAssociationDataSnapshot()
+            _restoredUIModelAssociationData = nil
+        }
+        
+        return _UIModelAssociationData ?? []
+    }
+    
+    var _restoredUIModelAssociationData: [String: Int]?
+    var restoredUIModelAssociationData: [String: Int] {
+        if _restoredUIModelAssociationData == nil {
+            var result = [String: Int]()
+            
+            for i in 0..<UIModelAssociationData.count {
+                let identifier = UIModelAssociationData[i]
+                if identifier == nil { continue }
+                result[identifier!] = i
+            }
+            
+            _restoredUIModelAssociationData = result
+        }
+ 
+        return _restoredUIModelAssociationData ?? [:]
+    }
+    
+    var viewModel = RedditItemsViewModel() {
+        didSet {
+            viewModel.delegate = self
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +65,18 @@ class RedditItemsViewController: UIViewController {
         tableView.addSubview(refreshControl)
         
         viewModel.delegate = self
-        viewModel.loadNextPage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        if viewFirstLoad {
+            viewFirstLoad = false
+            viewModel.loadNextPage()
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -142,6 +180,26 @@ extension RedditItemsViewController: UITableViewDelegate, UITableViewDataSource 
     
 }
 
+extension RedditItemsViewController: UIDataSourceModelAssociation {
+    
+    func modelIdentifierForElement(at idx: IndexPath, in view: UIView) -> String? {
+        if idx.isEmpty {
+            return nil
+        }
+        
+        return UIModelAssociationData[idx.row]
+    }
+    
+    func indexPathForElement(withModelIdentifier identifier: String, in view: UIView) -> IndexPath? {
+        guard let index = restoredUIModelAssociationData[identifier] else {
+            return nil
+        }
+        
+        return IndexPath(row: index, section: 0)
+    }
+ 
+}
+
 extension RedditItemsViewController: ViewModelDelegate {
     
     func willLoadData() {
@@ -168,4 +226,31 @@ extension RedditItemsViewController: ViewModelDelegate {
         present(alert, animated: true, completion: nil)
     }
     
+}
+
+// MARK: Overriding UIStateRestoring protocol
+
+extension RedditItemsViewController {
+
+    static var redditViewModelKey = "redditItemsViewModel"
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        coder.encode(self.viewModel, forKey: RedditItemsViewController.redditViewModelKey)
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        self.viewModel = coder.decodeObject(of: RedditItemsViewModel.self,
+                                            forKey: RedditItemsViewController.redditViewModelKey) ?? RedditItemsViewModel()
+
+        super.decodeRestorableState(with: coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        super.applicationFinishedRestoringState()
+        
+        _UIModelAssociationData         = nil
+        _restoredUIModelAssociationData = nil
+    }
+
 }

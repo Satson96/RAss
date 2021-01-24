@@ -27,14 +27,14 @@ class ImageDownloader: NSObject {
         let cachedImage = cache.object(forKey: url as NSURL)
         if let image = cachedImage {
             completion(image, url, true)
-            print("ImageDownloader: getting from cache.")
+            print("ImageDownloader: \(url) getting from cache.")
             return
         }
         
         let networkImageOperation = NetworkImageOperation(url: url) { (image) in
             if let image = image {
                 self.cache.setObject(image, forKey: url as NSURL)
-                print("ImageDownloader: setting to cache.")
+                print("ImageDownloader: \(url) setting to cache.")
             }
 
             DispatchQueue.main.async {

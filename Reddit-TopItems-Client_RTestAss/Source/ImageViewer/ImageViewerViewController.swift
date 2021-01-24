@@ -11,7 +11,13 @@ import WebKit
 class ImageViewerViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     static let identifier = "ImageViewerViewController"
 
-    @objc var viewModel: ImageViewerViewModel!
+    @objc var viewModel: ImageViewerViewModel? {
+        didSet {
+            if self.isViewLoaded {
+                updateViewData()
+            }
+        }
+    }
     
     @IBOutlet weak var webView: WKWebView!
     
@@ -27,12 +33,18 @@ class ImageViewerViewController: UIViewController, WKUIDelegate, WKNavigationDel
         self.webView.uiDelegate = self
         self.webView.navigationDelegate = self
         
+        updateViewData()
+    }
+    
+    func updateViewData() {
         if let title = viewModel?.title {
             navigationItem.title = title
         }
         
-        let request = URLRequest(url: viewModel.url)
-        webView.load(request)
+        if let url = viewModel?.url {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -52,4 +64,21 @@ class ImageViewerViewController: UIViewController, WKUIDelegate, WKNavigationDel
         navigationItem.setRightBarButton(nil, animated: true)
     }
 
+}
+
+// MARK: Overriding UIStateRestoring protocol
+
+extension ImageViewerViewController {
+    static var imageViewModelKey = "imageViewerViewModel"
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        coder.encode(self.viewModel, forKey: ImageViewerViewController.imageViewModelKey)
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        self.viewModel = coder.decodeObject(of: ImageViewerViewModel.self,
+                                            forKey: ImageViewerViewController.imageViewModelKey)!
+        super.decodeRestorableState(with: coder)
+    }
 }

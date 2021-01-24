@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RedditItem: Decodable {
+struct RedditItem: Codable {
     var title: String?
     var author: String?
     var num_comments: Int?
@@ -57,10 +57,32 @@ struct RedditItem: Decodable {
         
     }
     
+    func encode(to encoder: Encoder) throws {
+        var rootContainer = encoder.container(keyedBy: RootKeys.self)
+        var dataContainer = rootContainer.nestedContainer(keyedBy: CodingKeys.self,
+                                                          forKey: .data)
+        
+        try dataContainer.encode(self.title, forKey: .title)
+        try dataContainer.encode(self.author, forKey: .author)
+        try dataContainer.encode(self.num_comments, forKey: .num_comments)
+        try dataContainer.encode(self.thumbnail, forKey: .thumbnail)
+        try dataContainer.encode(self.url, forKey: .url)
+        try dataContainer.encode(self.created, forKey: .created)
+        
+        if let preview = self.preview {
+            var previewContainer = dataContainer.nestedContainer(keyedBy: PreviewKeys.self,
+                                                                 forKey: .preview)
+
+            try previewContainer.encode([preview], forKey: .images)
+        }
+        
+        
+    }
+    
 }
 
 extension RedditItem {
-    struct ImageSource: Decodable {
+    struct ImageSource: Codable {
         var imageUrlStr: String?
         
         enum CodingKeys: CodingKey {
@@ -76,9 +98,14 @@ extension RedditItem {
             // for the image url string only '&' character is encoded.
             imageUrlStr = urlStr?.replacingOccurrences(of: "&amp;", with: "&")
         }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.imageUrlStr, forKey: .url)
+        }
     }
     
-    struct ImagePreview: Decodable {
+    struct ImagePreview: Codable {
         var id: String?
         var source: ImageSource
     }

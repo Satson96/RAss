@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C5932FB425BA0E7E00423481 /* RedditsStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5932FB325BA0E7E00423481 /* RedditsStorageProtocol.swift */; };
+		C5932FB925BA0F5500423481 /* RedditsJSONDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5932FB825BA0F5500423481 /* RedditsJSONDiskStorage.swift */; };
 		C5B3D99025ACD3B60064A33D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3D98F25ACD3B60064A33D /* AppDelegate.swift */; };
 		C5B3D99225ACD3B60064A33D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3D99125ACD3B60064A33D /* SceneDelegate.swift */; };
 		C5B3D99425ACD3B60064A33D /* RedditItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B3D99325ACD3B60064A33D /* RedditItemsViewController.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C5932FB325BA0E7E00423481 /* RedditsStorageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditsStorageProtocol.swift; sourceTree = "<group>"; };
+		C5932FB825BA0F5500423481 /* RedditsJSONDiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditsJSONDiskStorage.swift; sourceTree = "<group>"; };
 		C5B3D98C25ACD3B60064A33D /* Reddit-TopItems-Client_RTestAss.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reddit-TopItems-Client_RTestAss.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5B3D98F25ACD3B60064A33D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5B3D99125ACD3B60064A33D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				C5B3D9CC25AE01AE0064A33D /* RedditItem.swift */,
+				C5932FB325BA0E7E00423481 /* RedditsStorageProtocol.swift */,
+				C5932FB825BA0F5500423481 /* RedditsJSONDiskStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -236,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5932FB925BA0F5500423481 /* RedditsJSONDiskStorage.swift in Sources */,
 				C5B3D9BC25ADF4AD0064A33D /* RequestProtocol.swift in Sources */,
 				C5B3D99425ACD3B60064A33D /* RedditItemsViewController.swift in Sources */,
 				C5B3DA1425B05D290064A33D /* ImageViewerViewModel.swift in Sources */,
@@ -248,6 +255,7 @@
 				C5B3D9B425ACD63A0064A33D /* ViewModelDelegate.swift in Sources */,
 				C5B3D99225ACD3B60064A33D /* SceneDelegate.swift in Sources */,
 				C5B3D9CD25AE01AE0064A33D /* RedditItem.swift in Sources */,
+				C5932FB425BA0E7E00423481 /* RedditsStorageProtocol.swift in Sources */,
 				C5B3D9CA25AE00B90064A33D /* TopRedditItemsResponse.swift in Sources */,
 				C5B3D9A925ACD57E0064A33D /* RedditItemsViewModel.swift in Sources */,
 				C5B3D9B725ACD7180064A33D /* RedditItemTableViewCell.swift in Sources */,

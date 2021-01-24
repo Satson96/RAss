@@ -9,24 +9,26 @@ import Foundation
 
 class RedditItemsViewModel: NSObject {
     
-    private var redditItems: [RedditItem] = []
-    
-    private let dataSource = RedditItemsDataSource()
+    private var dataSource = RedditItemsDataSource(persistentStorage: RedditsJSONDiskStorage())
     
     weak var delegate: ViewModelDelegate?
     
-    private var isRefreshingPages = false
+    override init() {
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        let storage = RedditsJSONDiskStorage()
+        dataSource = coder.decodeObject(of: RedditItemsDataSource.self,
+                                        forKey: RedditItemsViewModel.redditDataSourceKey) ?? RedditItemsDataSource(persistentStorage: storage)
+        dataSource.set(persistentStorage: storage)
+    }
     
     func loadNextPage() {
         self.delegate?.willLoadData()
         dataSource.getNext { (result: Result<[RedditItem], Error>) in
             switch result {
-            case .success(let items):
-                if self.isRefreshingPages {
-                    self.redditItems.removeAll()
-                    self.isRefreshingPages = false
-                }
-                self.redditItems.append(contentsOf: items)
+            case .success(_):
                 self.delegate?.didLoadData()
             case .failure(let error):
                 self.delegate?.receivedError(message: error.localizedDescription)
@@ -35,11 +37,11 @@ class RedditItemsViewModel: NSObject {
     }
     
     func getNumberOfItems() -> Int {
-        return redditItems.count
+        return dataSource.redditItems.count
     }
     
     func getViewModel(forIndex index: Int) -> RedditItemViewModel {
-        return RedditItemViewModel(item: redditItems[index])
+        return RedditItemViewModel(item: dataSource.redditItems[index])
     }
     
     func canLoadNextPage() -> Bool {
@@ -47,8 +49,25 @@ class RedditItemsViewModel: NSObject {
     }
     
     func refreshPages() {
-        isRefreshingPages = true
         dataSource.resetPagination()
         loadNextPage()
     }
+    
+    func getUIModelAssociationDataSnapshot() -> [String?] {
+        return dataSource.redditItems.map({ $0.url })
+    }
+}
+
+extension RedditItemsViewModel: NSSecureCoding {
+    
+    static var supportsSecureCoding: Bool {
+        return true
+    }
+
+    static var redditDataSourceKey = "redditItemsDataSource"
+
+    func encode(with coder: NSCoder) {
+        coder.encode(self.dataSource, forKey: RedditItemsViewModel.redditDataSourceKey)
+    }
+
 }
