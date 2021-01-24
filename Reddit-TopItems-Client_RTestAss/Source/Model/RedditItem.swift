@@ -29,7 +29,7 @@ struct RedditItem: Codable {
     }
     
     enum CodingKeys: CodingKey {
-      case title, author, num_comments, thumbnail, url, created, preview
+      case title, author, num_comments, thumbnail, url, created_utc, preview
     }
     
     enum PreviewKeys: CodingKey {
@@ -48,7 +48,7 @@ struct RedditItem: Codable {
         num_comments = try? dataContainer.decode(Int?.self, forKey: .num_comments)
         thumbnail = try? dataContainer.decode(String?.self, forKey: .thumbnail)
         url = try? dataContainer.decode(String?.self, forKey: .url)
-        created = try? dataContainer.decode(TimeInterval?.self, forKey: .created)
+        created = try? dataContainer.decode(TimeInterval?.self, forKey: .created_utc)
         
         let previewContainer = try? dataContainer.nestedContainer(keyedBy: PreviewKeys.self,
                                                                   forKey: .preview)
@@ -67,7 +67,7 @@ struct RedditItem: Codable {
         try dataContainer.encode(self.num_comments, forKey: .num_comments)
         try dataContainer.encode(self.thumbnail, forKey: .thumbnail)
         try dataContainer.encode(self.url, forKey: .url)
-        try dataContainer.encode(self.created, forKey: .created)
+        try dataContainer.encode(self.created, forKey: .created_utc)
         
         if let preview = self.preview {
             var previewContainer = dataContainer.nestedContainer(keyedBy: PreviewKeys.self,
